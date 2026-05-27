@@ -72,6 +72,16 @@ html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);f
 @keyframes cpop{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
 @keyframes cshk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 .next-btn{margin-top:12px;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer}
+/* Build chart column controls - compact horizontal pill per column */
+.col-ctrl{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;flex:1;padding:4px 2px 0}
+.col-pill{display:flex;align-items:center;background:var(--paper2);border:2px solid var(--rule);border-radius:20px;overflow:hidden;height:30px;width:100%;max-width:90px}
+.col-btn{flex:0 0 28px;height:100%;border:none;background:transparent;font-family:var(--mono);font-size:16px;font-weight:700;cursor:pointer;color:var(--navy);display:flex;align-items:center;justify-content:center;transition:.1s;user-select:none;-webkit-user-select:none;touch-action:manipulation;padding:0}
+.col-btn:active{background:var(--paper3)}
+.col-btn:disabled{color:var(--rule);cursor:not-allowed}
+.col-count{flex:1;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink2);text-align:center;line-height:1;border-left:1.5px solid var(--rule);border-right:1.5px solid var(--rule);height:100%;display:flex;align-items:center;justify-content:center}
+.col-pill.done{border-color:var(--lime);background:rgba(61,138,16,0.08)}
+.col-pill.done .col-count{color:var(--lime);border-color:rgba(61,138,16,0.3)}
+.col-pill.done .col-btn{color:var(--lime)}
 @media(max-width:600px){.header{height:auto;padding:10px 16px;flex-wrap:wrap;gap:8px}.header-tabs{width:100%;justify-content:center;flex-wrap:wrap}}
 </style>
 </head>
@@ -106,12 +116,13 @@ html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);f
       <span id="build-head-title">Pet Survey — Class 5A</span>
     </div>
     <div class="card-body">
-      <div class="instr" id="build-instr">Here are the survey results. <strong style="font-style:normal">Tap a bar to add one student. Tap the top of a bar to remove one.</strong> Build the chart to match the data!</div>
+      <div class="instr" id="build-instr">Here is the survey data. Use the + and − buttons to build each bar up to the right number!</div>
       <div class="build-btns" id="build-ds-btns"></div>
       <div class="data-row" id="build-data-row"></div>
-      <canvas id="build-canvas" width="600" height="320"></canvas>
-      <div class="build-hint">Tap a bar to add. Tap the coloured top to remove.</div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px">
+      <canvas id="build-canvas" width="600" height="260"></canvas>
+      <!-- Button row rendered by JS, aligned to bars -->
+      <div id="build-btn-row" style="display:flex;justify-content:flex-start;padding-left:38px;gap:0;margin-top:4px"></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px">
         <button class="check-btn" onclick="checkBuild()">Check my chart!</button>
         <button style="padding:10px 18px;background:var(--paper2);border:2px solid var(--rule);border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;color:var(--ink2)" onclick="resetBuild()">Reset</button>
       </div>
@@ -229,21 +240,80 @@ const READ_DS=[
    ]},
 ];
 
-// ── BUILD CHART ──────────────────────────────────────────────
+// -- BUILD CHART --
 let curBuildIdx=0;
 let buildValues=[];
 
 const buildCvs=document.getElementById('build-canvas');
 const buildCtx=buildCvs.getContext('2d');
 
-const PAD={top:20,right:20,bottom:55,left:38};
+const PAD={top:20,right:20,bottom:50,left:38};
 
 function getDs(){return BUILD_DS[curBuildIdx];}
 
 function resetBuild(){
   buildValues=getDs().items.map(()=>0);
   drawBuildChart();
+  renderBuildBtnRow();
   document.getElementById('build-result').textContent='';
+}
+
+function changeVal(i,delta){
+  const ds=getDs();
+  buildValues[i]=Math.max(0,Math.min(20,(buildValues[i]||0)+delta));
+  drawBuildChart();
+  const cnt=document.getElementById('col-count-'+i);
+  const pill=document.getElementById('col-pill-'+i);
+  if(!cnt||!pill)return;
+  cnt.textContent=buildValues[i];
+  const correct=buildValues[i]===ds.items[i].count;
+  pill.classList.toggle('done',correct);
+  const sub=pill.querySelector('.col-btn');
+  if(sub)sub.disabled=buildValues[i]<=0;
+}
+
+function renderBuildBtnRow(){
+  const ds=getDs();
+  const CW=buildCvs.width,W=CW-PAD.left-PAD.right;
+  const n=ds.items.length;
+  const gap=Math.floor(W/n);
+  const row=document.getElementById('build-btn-row');
+  row.innerHTML='';
+  row.style.paddingLeft=PAD.left+'px';
+
+  ds.items.forEach((item,i)=>{
+    const col=document.createElement('div');
+    col.className='col-ctrl';
+    col.style.width=gap+'px';
+    col.style.maxWidth=gap+'px';
+
+    // Horizontal pill: [−] count [+]
+    const pill=document.createElement('div');
+    pill.className='col-pill';
+    pill.id='col-pill-'+i;
+
+    const sub=document.createElement('button');
+    sub.className='col-btn';
+    sub.innerHTML='<svg width="10" height="2" viewBox="0 0 10 2"><rect x="0" y="0" width="10" height="2" rx="1" fill="currentColor"/></svg>';
+    sub.setAttribute('aria-label','Remove 1 from '+item.label);
+    sub.disabled=(buildValues[i]||0)<=0;
+    sub.addEventListener('click',()=>changeVal(i,-1));
+
+    const cnt=document.createElement('div');
+    cnt.className='col-count';
+    cnt.id='col-count-'+i;
+    cnt.textContent=buildValues[i]||0;
+
+    const add=document.createElement('button');
+    add.className='col-btn';
+    add.innerHTML='<svg width="10" height="10" viewBox="0 0 10 10"><rect x="4" y="0" width="2" height="10" rx="1" fill="currentColor"/><rect x="0" y="4" width="10" height="2" rx="1" fill="currentColor"/></svg>';
+    add.setAttribute('aria-label','Add 1 to '+item.label);
+    add.addEventListener('click',()=>changeVal(i,1));
+
+    pill.appendChild(sub);pill.appendChild(cnt);pill.appendChild(add);
+    col.appendChild(pill);
+    row.appendChild(col);
+  });
 }
 
 function drawBuildChart(){
@@ -251,109 +321,78 @@ function drawBuildChart(){
   const CW=buildCvs.width,CH=buildCvs.height;
   const W=CW-PAD.left-PAD.right,H=CH-PAD.top-PAD.bottom;
   const maxTarget=Math.max(...ds.items.map(i=>i.count));
-  const maxVal=Math.max(maxTarget,Math.max(...buildValues,1));
+  const maxVal=Math.max(maxTarget,1);
   const n=ds.items.length;
-  const barW=Math.floor(W/n*0.6);
   const gap=Math.floor(W/n);
+  const barW=Math.floor(gap*0.6);
 
   buildCtx.clearRect(0,0,CW,CH);
+
   // Axes
-  buildCtx.strokeStyle='#243060';buildCtx.lineWidth=2.5;
+  buildCtx.strokeStyle='#243060';buildCtx.lineWidth=2.5;buildCtx.lineCap='square';
   buildCtx.beginPath();buildCtx.moveTo(PAD.left,PAD.top);buildCtx.lineTo(PAD.left,PAD.top+H);buildCtx.lineTo(PAD.left+W,PAD.top+H);buildCtx.stroke();
 
   // Y grid + labels
   const step=maxVal<=10?2:maxVal<=20?4:5;
-  buildCtx.fillStyle='#6878A8';buildCtx.font='bold 11px "Space Mono",monospace';buildCtx.textAlign='right';
   for(let v=0;v<=maxVal;v+=step){
     const y=PAD.top+H-Math.round(v/maxVal*H);
     buildCtx.strokeStyle='rgba(180,200,230,0.4)';buildCtx.lineWidth=1;buildCtx.setLineDash([3,3]);
     buildCtx.beginPath();buildCtx.moveTo(PAD.left,y);buildCtx.lineTo(PAD.left+W,y);buildCtx.stroke();
     buildCtx.setLineDash([]);
-    buildCtx.fillStyle='#6878A8';buildCtx.fillText(v,PAD.left-4,y+4);
+    buildCtx.fillStyle='#6878A8';buildCtx.font='bold 11px "Space Mono",monospace';buildCtx.textAlign='right';
+    buildCtx.textBaseline='middle';
+    buildCtx.fillText(v,PAD.left-5,y);
   }
 
-  // Target dotted bars
   ds.items.forEach((item,i)=>{
-    const x=PAD.left+i*gap+Math.floor(gap/2)-Math.floor(barW/2);
+    const cx=PAD.left+i*gap+Math.floor(gap/2);
+    const x=cx-Math.floor(barW/2);
+
+    // Ghost target bar (dotted outline)
     const targetH=Math.round(item.count/maxVal*H);
-    buildCtx.strokeStyle='rgba(100,130,180,0.35)';buildCtx.lineWidth=barW;buildCtx.setLineDash([4,3]);
-    buildCtx.beginPath();buildCtx.moveTo(x+barW/2,PAD.top+H-targetH);buildCtx.lineTo(x+barW/2,PAD.top+H);buildCtx.stroke();
+    buildCtx.strokeStyle='rgba(100,130,180,0.3)';buildCtx.lineWidth=1.5;buildCtx.setLineDash([4,3]);
+    buildCtx.strokeRect(x,PAD.top+H-targetH,barW,targetH);
     buildCtx.setLineDash([]);
     // target number above ghost
-    buildCtx.fillStyle='rgba(100,130,180,0.5)';buildCtx.font='bold 11px "Space Mono",monospace';buildCtx.textAlign='center';
-    buildCtx.fillText(item.count,x+barW/2,PAD.top+H-targetH-4);
-  });
+    buildCtx.fillStyle='rgba(100,130,180,0.45)';buildCtx.font='bold 11px "Space Mono",monospace';
+    buildCtx.textAlign='center';buildCtx.textBaseline='bottom';
+    buildCtx.fillText(item.count,cx,PAD.top+H-targetH-2);
 
-  // Actual bars
-  ds.items.forEach((item,i)=>{
+    // Actual filled bar
     const v=buildValues[i]||0;
-    const x=PAD.left+i*gap+Math.floor(gap/2)-Math.floor(barW/2);
-    const bH=Math.round(v/maxVal*H);
-    if(bH>0){
-      buildCtx.fillStyle=item.color;
-      buildCtx.beginPath();buildCtx.roundRect(x,PAD.top+H-bH,barW,bH,4);buildCtx.fill();
-      // value label on bar
-      buildCtx.fillStyle='#fff';buildCtx.font='bold 13px "Space Mono",monospace';buildCtx.textAlign='center';
-      if(bH>18)buildCtx.fillText(v,x+barW/2,PAD.top+H-bH+14);
-      else{buildCtx.fillStyle=item.color;buildCtx.fillText(v,x+barW/2,PAD.top+H-bH-6);}
+    if(v>0){
+      const bH=Math.round(v/maxVal*H);
+      const correct=v===item.count;
+      buildCtx.fillStyle=correct?item.color:item.color+'CC';
+      buildCtx.beginPath();buildCtx.roundRect(x,PAD.top+H-bH,barW,bH,[4,4,0,0]);buildCtx.fill();
+      // Tick on top if correct
+      if(correct){
+        buildCtx.fillStyle='rgba(255,255,255,0.9)';
+        buildCtx.font='bold 14px sans-serif';buildCtx.textAlign='center';buildCtx.textBaseline='middle';
+        buildCtx.fillText('✓',cx,PAD.top+H-bH+10);
+      }
     }
-    // Emoji + label below axis
-    buildCtx.font='18px serif';buildCtx.textAlign='center';buildCtx.fillText(item.emoji,x+barW/2,PAD.top+H+16);
-    buildCtx.fillStyle='#243060';buildCtx.font='bold 10px "Space Mono",monospace';
-    buildCtx.fillText(item.label.length>7?item.label.substring(0,7):item.label,x+barW/2,PAD.top+H+33);
+
+    // Emoji below axis
+    buildCtx.font='16px serif';buildCtx.textAlign='center';buildCtx.textBaseline='top';
+    buildCtx.fillText(item.emoji,cx,PAD.top+H+6);
+    // Label
+    buildCtx.fillStyle='#243060';buildCtx.font='bold 9px "Space Mono",monospace';
+    const lbl=item.label.length>8?item.label.substring(0,8):item.label;
+    buildCtx.fillText(lbl,cx,PAD.top+H+24);
   });
 }
-
-// Hit test — which bar was tapped and was it near the top?
-function buildHit(px,py){
-  const ds=getDs();
-  const CW=buildCvs.width,CH=buildCvs.height;
-  const W=CW-PAD.left-PAD.right,H=CH-PAD.top-PAD.bottom;
-  const maxTarget=Math.max(...ds.items.map(i=>i.count));
-  const maxVal=Math.max(maxTarget,Math.max(...buildValues,1));
-  const n=ds.items.length;
-  const barW=Math.floor(W/n*0.6);
-  const gap=Math.floor(W/n);
-
-  for(let i=0;i<n;i++){
-    const x=PAD.left+i*gap+Math.floor(gap/2)-Math.floor(barW/2);
-    // Check if within column zone (wider hit area)
-    if(px>=x-6&&px<=x+barW+6&&py>=PAD.top&&py<=PAD.top+H){
-      const v=buildValues[i]||0;
-      const bH=Math.round(v/maxVal*H);
-      const barTop=PAD.top+H-bH;
-      // Near top of filled bar = remove; anywhere else = add
-      if(v>0&&py>=barTop-12&&py<=barTop+14){
-        buildValues[i]=Math.max(0,v-1);
-      } else {
-        buildValues[i]=Math.min(20,v+1);
-      }
-      drawBuildChart();
-      return;
-    }
-  }
-}
-
-function getScaledPos(e){
-  const r=buildCvs.getBoundingClientRect();
-  const sx=buildCvs.width/r.width,sy=buildCvs.height/r.height;
-  const src=e.touches?e.touches[0]:e;
-  return[(src.clientX-r.left)*sx,(src.clientY-r.top)*sy];
-}
-
-buildCvs.addEventListener('click',e=>{const[x,y]=getScaledPos(e);buildHit(x,y)});
-buildCvs.addEventListener('touchend',e=>{e.preventDefault();const[x,y]=getScaledPos(e.changedTouches[0]||e.touches[0]||e);buildHit(x,y)},{passive:false});
 
 function checkBuild(){
   const ds=getDs();
-  const wrong=ds.items.filter((item,i)=>buildValues[i]!==item.count);
+  const wrong=ds.items.filter((item,i)=>(buildValues[i]||0)!==item.count);
   const res=document.getElementById('build-result');
   if(wrong.length===0){
     const mode=ds.items.reduce((a,b)=>a.count>b.count?a:b);
-    res.innerHTML='\u2713 <strong>Correct!</strong> Your chart matches perfectly. The tallest bar is '+mode.emoji+' <strong>'+mode.label+'</strong> ('+mode.count+' students) — this is called the <em>mode</em>, the most popular answer!';
+    res.innerHTML='✓ <strong>Correct!</strong> Your chart matches the data. The tallest bar is '+mode.emoji+' <strong>'+mode.label+'</strong> ('+mode.count+') — this is the <em>mode</em>, the most popular answer!';
     res.className='check-result ok';
   } else {
-    res.innerHTML='\u2717 Not quite. Check: '+wrong.map(w=>w.emoji+' <strong>'+w.label+'</strong> needs '+w.count).join(', ')+'.';
+    res.innerHTML='✗ Not quite. Check: '+wrong.map(w=>w.emoji+' <strong>'+w.label+'</strong> needs '+w.count).join(', ')+'.';
     res.className='check-result no';
   }
 }
@@ -375,7 +414,7 @@ function initBuild(){
   document.getElementById('build-head-icon').textContent=ds.icon;
   document.getElementById('build-head-title').textContent=ds.title;
   document.getElementById('build-head').style.background=ds.color;
-  document.getElementById('build-instr').textContent=ds.instr;
+  document.getElementById('build-instr').textContent='Use + to add students and − to remove. Match each bar to the target number shown in the data above!';
   // Data pills
   const dr=document.getElementById('build-data-row');dr.innerHTML='';
   ds.items.forEach(item=>{
@@ -386,8 +425,9 @@ function initBuild(){
   buildValues=ds.items.map(()=>0);
   // Size canvas responsively
   const maxW=Math.min(buildCvs.parentElement.offsetWidth||600,600);
-  buildCvs.width=maxW;buildCvs.height=Math.round(maxW*0.53);
+  buildCvs.width=maxW;buildCvs.height=Math.round(maxW*0.45);
   drawBuildChart();
+  renderBuildBtnRow();
   document.getElementById('build-result').textContent='';
 }
 
