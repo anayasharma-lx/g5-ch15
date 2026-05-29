@@ -16,6 +16,8 @@
   --sans:'Syne',sans-serif;--serif:'Instrument Serif',serif;--mono:'Space Mono',monospace;
 }
 html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);font-family:var(--sans);overflow-x:hidden}
+
+/* ── HEADER ── */
 .header{background:var(--navy);padding:0 20px;display:flex;align-items:center;gap:14px;height:56px;border-bottom:3px solid var(--navy2);position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,0.25)}
 .header-title{font-family:var(--serif);font-size:20px;color:#EEF4FF;font-style:italic}
 .header-sub{font-family:var(--mono);font-size:10px;color:rgba(238,244,255,0.5);letter-spacing:1.5px;text-transform:uppercase}
@@ -23,27 +25,57 @@ html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);f
 .tab{padding:7px 12px;font-family:var(--mono);font-size:10px;color:rgba(238,244,255,0.5);cursor:pointer;border-radius:6px;transition:.2s;border:none;background:none}
 .tab.on{background:var(--paper);color:var(--ink);font-weight:700}
 .tab:hover:not(.on){color:rgba(238,244,255,0.85)}
-.main{max-width:860px;margin:0 auto;padding:20px 16px 60px}
+
+/* ── LAYOUT ── */
+.main{max-width:900px;margin:0 auto;padding:20px 16px 60px}
 .pnl{display:none}.pnl.on{display:block}
 .card{background:#fff;border:2px solid var(--rule);border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 16px rgba(10,30,80,0.07)}
 .card-head{padding:12px 18px;color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
 .card-body{padding:16px 20px}
-.instr{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--ink2);line-height:1.7;margin-bottom:14px}
-.data-row{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
-.data-pill{background:var(--paper2);border:2px solid var(--rule);border-radius:8px;padding:8px 14px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--ink2)}
-.data-pill span{font-size:18px;margin-right:6px}
-/* BUILD CHART CANVAS */
-.build-wrap{position:relative;margin-bottom:8px}
-#build-canvas{display:block;width:100%;height:auto;cursor:pointer;touch-action:none}
-.build-hint{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink3);margin-bottom:12px}
-.build-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.ds-btn{padding:8px 16px;font-family:var(--mono);font-size:11px;font-weight:700;border-radius:8px;cursor:pointer;border:2px solid var(--rule);background:var(--paper2);color:var(--ink2);transition:.15s}
+.instr{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink2);line-height:1.7;margin-bottom:14px}
+
+/* ── SCENARIO INTRO ── */
+.scenario-intro{background:var(--sky);border:2px solid var(--rule);border-radius:10px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px}
+.scenario-intro-icon{font-size:26px;flex-shrink:0;line-height:1.2}
+.scenario-intro-text{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink2);line-height:1.65}
+
+/* ── DATASET SWITCHER ── */
+.build-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.ds-btn{padding:7px 14px;font-family:var(--mono);font-size:11px;font-weight:700;border-radius:8px;cursor:pointer;border:2px solid var(--rule);background:var(--paper2);color:var(--ink2);transition:.15s}
 .ds-btn.on{color:#fff;border-color:transparent}
-.check-btn{padding:10px 22px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer}
+
+/* ── TWO COLUMN BUILD LAYOUT ── */
+.build-layout{display:grid;grid-template-columns:1fr 1.7fr;gap:16px;align-items:start}
+
+/* ── COUNT CARDS ── */
+.count-list{display:flex;flex-direction:column;gap:8px}
+.count-item{border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px;border:2px solid transparent;transition:.2s}
+.count-item.filled{border-color:transparent}
+.count-left{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.count-emoji{font-size:26px;line-height:1;flex-shrink:0}
+.count-label{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.count-val-badge{font-family:var(--mono);font-size:13px;font-weight:700;min-width:28px;text-align:center;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,0.6)}
+.stepper{display:flex;align-items:center;gap:0;background:rgba(255,255,255,0.55);border:1.5px solid rgba(255,255,255,0.7);border-radius:20px;overflow:hidden;height:30px;flex-shrink:0}
+.s-btn{width:30px;height:100%;border:none;background:transparent;font-size:17px;font-weight:700;cursor:pointer;transition:.1s;display:flex;align-items:center;justify-content:center;user-select:none;-webkit-user-select:none;color:inherit}
+.s-btn:active{background:rgba(255,255,255,0.4)}
+.s-btn:disabled{opacity:.3;cursor:not-allowed}
+.s-num{min-width:30px;font-family:var(--mono);font-size:13px;font-weight:700;text-align:center;border-left:1.5px solid rgba(255,255,255,0.5);border-right:1.5px solid rgba(255,255,255,0.5);height:100%;display:flex;align-items:center;justify-content:center;padding:0 2px}
+
+/* ── CANVAS PANEL ── */
+.chart-panel{background:var(--paper2);border:2px solid var(--rule);border-radius:12px;padding:12px;position:relative}
+.chart-label{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:8px;text-align:center}
+#build-canvas{display:block;width:100%;height:auto;border-radius:6px}
+
+/* ── BOTTOM ACTION ROW ── */
+.action-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:14px}
+.check-btn{padding:10px 22px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer;transition:.15s}
 .check-btn:hover{background:var(--navy2)}
+.reset-btn{padding:10px 18px;background:var(--paper2);border:2px solid var(--rule);border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;color:var(--ink2);transition:.15s}
+.reset-btn:hover{background:var(--paper3)}
 .check-result{margin-top:10px;font-family:var(--serif);font-style:italic;font-size:15px;line-height:1.6;min-height:20px}
 .check-result.ok{color:var(--lime)}.check-result.no{color:#DC2626}
-/* READ CHART */
+
+/* ── READ CHART ── */
 .score-bar{display:flex;align-items:center;gap:14px;background:var(--amber-light);border:2px solid var(--amber);border-radius:10px;padding:12px 18px;margin-bottom:14px}
 .score-num{font-family:var(--mono);font-size:26px;font-weight:700;color:var(--amber2)}
 .score-lbl{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink2)}
@@ -59,7 +91,8 @@ html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);f
 .q-opt.wrong{background:#FEE2E2;border-color:#DC2626;color:#7F1D1D;animation:cshk .35s}
 .q-fb{margin-top:7px;font-family:var(--serif);font-style:italic;font-size:13px;min-height:16px}
 .q-fb.ok{color:#16A34A}.q-fb.no{color:#DC2626}
-/* PRACTICE */
+
+/* ── PRACTICE ── */
 .pr-card{background:#fff;border:2px solid var(--rule);border-radius:12px;padding:20px;margin-bottom:16px}
 .pr-q{font-family:var(--serif);font-style:italic;font-size:16px;color:var(--ink);margin-bottom:14px;line-height:1.6}
 .pr-opts{display:flex;gap:8px;flex-wrap:wrap}
@@ -69,23 +102,20 @@ html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);f
 .pr-opt.wrong{background:#FEE2E2;border-color:#DC2626;color:#7F1D1D;animation:cshk .35s}
 .pr-fb{min-height:22px;margin-top:12px;font-family:var(--serif);font-style:italic;font-size:14px}
 .pr-fb.ok{color:#16A34A}.pr-fb.no{color:#DC2626}
+.next-btn{margin-top:12px;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer}
+
 @keyframes cpop{0%{transform:scale(1)}50%{transform:scale(1.06)}100%{transform:scale(1)}}
 @keyframes cshk{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
-.next-btn{margin-top:12px;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:10px 22px;font-family:var(--mono);font-size:12px;font-weight:700;cursor:pointer}
-/* Build chart column controls - compact horizontal pill per column */
-.col-ctrl{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;flex:1;padding:4px 2px 0}
-.col-pill{display:flex;align-items:center;background:var(--paper2);border:2px solid var(--rule);border-radius:20px;overflow:hidden;height:30px;width:100%;max-width:90px}
-.col-btn{flex:0 0 28px;height:100%;border:none;background:transparent;font-family:var(--mono);font-size:16px;font-weight:700;cursor:pointer;color:var(--navy);display:flex;align-items:center;justify-content:center;transition:.1s;user-select:none;-webkit-user-select:none;touch-action:manipulation;padding:0}
-.col-btn:active{background:var(--paper3)}
-.col-btn:disabled{color:var(--rule);cursor:not-allowed}
-.col-count{flex:1;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--ink2);text-align:center;line-height:1;border-left:1.5px solid var(--rule);border-right:1.5px solid var(--rule);height:100%;display:flex;align-items:center;justify-content:center}
-.col-pill.done{border-color:var(--lime);background:rgba(61,138,16,0.08)}
-.col-pill.done .col-count{color:var(--lime);border-color:rgba(61,138,16,0.3)}
-.col-pill.done .col-btn{color:var(--lime)}
-@media(max-width:600px){.header{height:auto;padding:10px 16px;flex-wrap:wrap;gap:8px}.header-tabs{width:100%;justify-content:center;flex-wrap:wrap}}
+
+@media(max-width:640px){
+  .build-layout{grid-template-columns:1fr}
+  .header{height:auto;padding:10px 16px;flex-wrap:wrap;gap:8px}
+  .header-tabs{width:100%;justify-content:center}
+}
 </style>
 </head>
 <body>
+
 <div class="header">
   <svg width="34" height="34" viewBox="0 0 34 34" style="flex-shrink:0">
     <rect x="4" y="24" width="5" height="8" rx="1" fill="#6EE7B7"/>
@@ -108,35 +138,44 @@ html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);f
 
 <div class="main">
 
-<!-- BUILD -->
+<!-- ══ BUILD ══ -->
 <div class="pnl on" id="pnl-build">
   <div class="card">
     <div class="card-head" id="build-head" style="background:var(--teal)">
-      <span id="build-head-icon" style="font-size:20px">🐾</span>
-      <span id="build-head-title">Pet Survey — Class 5A</span>
+      <span id="build-head-icon" style="font-size:20px">✏️</span>
+      <span id="build-head-title">My Stationery Count</span>
     </div>
     <div class="card-body">
-      <div class="instr" id="build-instr">Here is the survey data. Use the + and − buttons to build each bar up to the right number!</div>
       <div class="build-btns" id="build-ds-btns"></div>
-      <div class="data-row" id="build-data-row"></div>
-      <canvas id="build-canvas" width="600" height="260"></canvas>
-      <!-- Button row rendered by JS, aligned to bars -->
-      <div id="build-btn-row" style="display:flex;justify-content:flex-start;padding-left:38px;gap:0;margin-top:4px"></div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px">
-        <button class="check-btn" onclick="checkBuild()">Check my chart!</button>
-        <button style="padding:10px 18px;background:var(--paper2);border:2px solid var(--rule);border-radius:8px;font-family:var(--mono);font-size:11px;font-weight:700;cursor:pointer;color:var(--ink2)" onclick="resetBuild()">Reset</button>
+      <div class="scenario-intro">
+        <div class="scenario-intro-icon" id="scenario-icon">🎒</div>
+        <div class="scenario-intro-text" id="scenario-text"></div>
+      </div>
+
+      <!-- Two-column: counters left, live chart right -->
+      <div class="build-layout">
+        <div class="count-list" id="count-list"></div>
+        <div class="chart-panel">
+          <div class="chart-label" id="chart-panel-label">Your chart will appear here as you count!</div>
+          <canvas id="build-canvas" width="500" height="280"></canvas>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="check-btn" onclick="buildChart()">✓ Done — Show Results!</button>
+        <button class="reset-btn" onclick="resetBuild()">Reset</button>
       </div>
       <div class="check-result" id="build-result"></div>
     </div>
   </div>
 </div>
 
-<!-- READ -->
+<!-- ══ READ ══ -->
 <div class="pnl" id="pnl-read">
   <div class="score-bar">
     <div class="score-num" id="read-score">0 / 0</div>
     <div class="score-lbl">correct answers</div>
-    <button class="new-chart-btn" onclick="nextReadChart()">New chart</button>
+    <button class="new-chart-btn" onclick="nextReadChart()">New chart →</button>
   </div>
   <div class="card">
     <div class="card-head" id="read-head" style="background:var(--navy)">
@@ -150,422 +189,505 @@ html,body{width:100%;min-height:100vh;background:var(--paper);color:var(--ink);f
   </div>
 </div>
 
-<!-- PRACTICE -->
+<!-- ══ PRACTICE ══ -->
 <div class="pnl" id="pnl-practice">
   <div class="pr-card">
     <div class="pr-q" id="pr-q">Loading…</div>
     <div class="pr-opts" id="pr-opts"></div>
     <div class="pr-fb" id="pr-fb"></div>
-    <button class="next-btn" onclick="nextPQ()">Next question</button>
+    <button class="next-btn" onclick="nextPQ()">Next question →</button>
   </div>
 </div>
-</div>
+
+</div><!-- /main -->
 
 <script>
-// ── DATASETS ────────────────────────────────────────────────
-const BUILD_DS=[
-  {id:'pets',title:'Pet Survey — Class 5A',icon:'\uD83D\uDC3E',color:'#0D7A7A',
-   instr:'Tap each bar to grow it. Match the number shown in the data above.',
-   items:[
-    {label:'Dog',   emoji:'\uD83D\uDC36',count:9, color:'#1A3A6B'},
-    {label:'Cat',   emoji:'\uD83D\uDC31',count:6, color:'#9A1060'},
-    {label:'Fish',  emoji:'\uD83D\uDC1F',count:4, color:'#0D7A7A'},
-    {label:'Bird',  emoji:'\uD83E\uDD9C',count:3, color:'#3D8A10'},
-    {label:'No pet',emoji:'\u2B55',       count:14,color:'#888'},
-  ]},
-  {id:'sport',title:'Favourite Sport — Class 5B',icon:'\u26BD',color:'#1A3A6B',
-   instr:'Tap each bar to build it up one student at a time.',
-   items:[
-    {label:'Cricket',  emoji:'\uD83C\uDFCF',count:12,color:'#1A3A6B'},
-    {label:'Football', emoji:'\u26BD',       count:8, color:'#0D7A7A'},
-    {label:'Badminton',emoji:'\uD83C\uDFF8', count:5, color:'#3D8A10'},
-    {label:'Kabaddi',  emoji:'\uD83E\uDD3C', count:7, color:'#B87808'},
-    {label:'Swimming', emoji:'\uD83C\uDFCA', count:3, color:'#9A1060'},
-  ]},
-  {id:'food',title:'Favourite Lunch — School Survey',icon:'\uD83C\uDF5A',color:'#B87808',
-   instr:'Build the bar chart by tapping each column.',
-   items:[
-    {label:'Rice & Dal',emoji:'\uD83C\uDF5A',count:11,color:'#B87808'},
-    {label:'Chapati',   emoji:'\uD83E\uDED3',count:9, color:'#0D7A7A'},
-    {label:'Noodles',   emoji:'\uD83C\uDF5C',count:7, color:'#9A1060'},
-    {label:'Idli/Dosa', emoji:'\uD83E\uDD98',count:5, color:'#3D8A10'},
-    {label:'Sandwich',  emoji:'\uD83E\uDD6A',count:4, color:'#1A3A6B'},
-  ]},
+// ── DATASETS ─────────────────────────────────────────────────────────────────
+const BUILD_DS = [
+  {
+    id: 'stationery', title: 'My Stationery Count', icon: '✏️', color: '#0D7A7A',
+    scenarioIcon: '🎒',
+    scenario: 'Look inside your pencil case or school bag. Count each item and tap + to add — watch your bar chart grow in real time!',
+    items: [
+      { label: 'Pencils',    emoji: '✏️',  color: '#1A3A6B', bg: '#D0E8FF' },
+      { label: 'Pens',       emoji: '🖊️',  color: '#9A1060', bg: '#FCE7F3' },
+      { label: 'Erasers',    emoji: '🧽',  color: '#0D7A7A', bg: '#CCFBF1' },
+      { label: 'Rulers',     emoji: '📏',  color: '#3D8A10', bg: '#DCFCE7' },
+      { label: 'Sharpeners', emoji: '🔧',  color: '#B87808', bg: '#FEF3C7' },
+    ],
+    insight: (items, vals) => {
+      const total = vals.reduce((a, b) => a + b, 0);
+      const max = Math.max(...vals);
+      const maxItem = items[vals.indexOf(max)];
+      return `You have <strong>${total}</strong> items altogether. You have the most ${maxItem.emoji} <strong>${maxItem.label}</strong> (${max})!`;
+    }
+  },
+  {
+    id: 'books', title: "Today's School Bag", icon: '📚', color: '#1A3A6B',
+    scenarioIcon: '🎒',
+    scenario: "Open your school bag. Count how many books or notebooks you have for each subject today, then tap + to enter them!",
+    items: [
+      { label: 'Maths',   emoji: '🔢', color: '#1A3A6B', bg: '#D0E8FF' },
+      { label: 'English', emoji: '📖', color: '#9A1060', bg: '#FCE7F3' },
+      { label: 'Science', emoji: '🔬', color: '#0D7A7A', bg: '#CCFBF1' },
+      { label: 'Hindi',   emoji: '🪔', color: '#B87808', bg: '#FEF3C7' },
+      { label: 'EVS',     emoji: '🌿', color: '#3D8A10', bg: '#DCFCE7' },
+    ],
+    insight: (items, vals) => {
+      const total = vals.reduce((a, b) => a + b, 0);
+      const max = Math.max(...vals);
+      const maxItem = items[vals.indexOf(max)];
+      return `Your bag has <strong>${total}</strong> books today. You have the most books for ${maxItem.emoji} <strong>${maxItem.label}</strong>!`;
+    }
+  },
+  {
+    id: 'colours', title: 'My Colour Pencils', icon: '🖍️', color: '#B87808',
+    scenarioIcon: '🎨',
+    scenario: 'Group your colour pencils or crayons by colour family and count each group. Tap + for each one you count!',
+    items: [
+      { label: 'Red / Pink',      emoji: '🔴', color: '#DC2626', bg: '#FEE2E2' },
+      { label: 'Blue / Purple',   emoji: '🔵', color: '#1A3A6B', bg: '#D0E8FF' },
+      { label: 'Green',           emoji: '🟢', color: '#3D8A10', bg: '#DCFCE7' },
+      { label: 'Yellow / Orange', emoji: '🟡', color: '#B87808', bg: '#FEF3C7' },
+      { label: 'Other',           emoji: '⚪', color: '#6878A8', bg: '#E8F0FC' },
+    ],
+    insight: (items, vals) => {
+      const total = vals.reduce((a, b) => a + b, 0);
+      const max = Math.max(...vals);
+      const maxItem = items[vals.indexOf(max)];
+      return `You have <strong>${total}</strong> colour pencils altogether. Your biggest group is ${maxItem.emoji} <strong>${maxItem.label}</strong> (${max})!`;
+    }
+  },
 ];
 
-const READ_DS=[
-  {title:'Fruits sold — Monday',icon:'\uD83C\uDF4B',color:'#3D8A10',
-   note:'How many of each fruit were sold at the school canteen?',
-   items:[
-    {label:'Banana',emoji:'\uD83C\uDF4C',count:15,color:'#B87808'},
-    {label:'Apple', emoji:'\uD83C\uDF4E',count:9, color:'#DC2626'},
-    {label:'Mango', emoji:'\uD83E\uDD6D',count:6, color:'#D97706'},
-    {label:'Orange',emoji:'\uD83C\uDF4A',count:11,color:'#EA580C'},
-    {label:'Guava', emoji:'\uD83C\uDF4F',count:4, color:'#16A34A'},
-   ],
-   questions:[
-    {q:'Which fruit sold the most?',ans:'Banana',opts:['Apple','Banana','Orange','Mango'],exp:'Banana has the tallest bar — 15 sold.'},
-    {q:'How many Apples were sold?',ans:'9',opts:['6','9','11','15'],exp:'The Apple bar reaches 9.'},
-    {q:'How many more Oranges than Mangoes?',ans:'5',opts:['3','5','6','7'],exp:'11 \u2212 6 = 5.'},
-    {q:'Total fruits sold?',ans:'45',opts:['40','43','45','50'],exp:'15+9+6+11+4 = 45.'},
-   ]},
-  {title:'Travel to school — Class 5A',icon:'\uD83D\uDE8C',color:'#9A1060',
-   note:'How many students use each way to travel to school?',
-   items:[
-    {label:'Bus',   emoji:'\uD83D\uDE8C',count:14,color:'#1A3A6B'},
-    {label:'Car',   emoji:'\uD83D\uDE97',count:8, color:'#9A1060'},
-    {label:'Cycle', emoji:'\uD83D\uDEB2',count:5, color:'#3D8A10'},
-    {label:'Walk',  emoji:'\uD83D\uDEB6',count:10,color:'#B87808'},
-    {label:'Train', emoji:'\uD83D\uDE87',count:3, color:'#0D7A7A'},
-   ],
-   questions:[
-    {q:'How many students come by Bus?',ans:'14',opts:['8','10','12','14'],exp:'Bus bar = 14.'},
-    {q:'Fewest students travel by?',ans:'Train',opts:['Cycle','Walk','Car','Train'],exp:'Train = 3, the shortest bar.'},
-    {q:'Walk + Cycle combined?',ans:'15',opts:['13','15','18','19'],exp:'10 + 5 = 15.'},
-    {q:'Total students in class?',ans:'40',opts:['35','38','40','42'],exp:'14+8+5+10+3 = 40.'},
-   ]},
-  {title:'Birthday quarters — Grade 5',icon:'\uD83C\uDF82',color:'#1A3A6B',
-   note:'How many students have birthdays in each part of the year?',
-   items:[
-    {label:'Jan\u2013Mar',emoji:'\u2603\uFE0F',count:7, color:'#1A3A6B'},
-    {label:'Apr\u2013Jun',emoji:'\uD83C\uDF38',count:11,color:'#9A1060'},
-    {label:'Jul\u2013Sep',emoji:'\u2600\uFE0F',count:9, color:'#B87808'},
-    {label:'Oct\u2013Dec',emoji:'\uD83C\uDF42',count:5, color:'#3D8A10'},
-   ],
-   questions:[
-    {q:'Most birthdays in which quarter?',ans:'Apr\u2013Jun',opts:['Jan\u2013Mar','Apr\u2013Jun','Jul\u2013Sep','Oct\u2013Dec'],exp:'Apr\u2013Jun = 11.'},
-    {q:'How many birthdays in Oct\u2013Dec?',ans:'5',opts:['5','7','9','11'],exp:'Oct\u2013Dec bar = 5.'},
-    {q:'Apr\u2013Jun minus Oct\u2013Dec?',ans:'6',opts:['4','5','6','7'],exp:'11 \u2212 5 = 6.'},
-    {q:'Total students in Grade 5?',ans:'32',opts:['28','30','32','36'],exp:'7+11+9+5 = 32.'},
-   ]},
-];
+const PAD = { top: 24, right: 16, bottom: 56, left: 40 };
 
-// -- BUILD CHART --
-let curBuildIdx=0;
-let buildValues=[];
+let curBuildIdx = 0;
+let buildValues = [];
 
-const buildCvs=document.getElementById('build-canvas');
-const buildCtx=buildCvs.getContext('2d');
+const buildCvs = document.getElementById('build-canvas');
+const buildCtx = buildCvs.getContext('2d');
 
-const PAD={top:20,right:20,bottom:50,left:38};
+function getDs() { return BUILD_DS[curBuildIdx]; }
 
-function getDs(){return BUILD_DS[curBuildIdx];}
-
-function resetBuild(){
-  buildValues=getDs().items.map(()=>0);
-  drawBuildChart();
-  renderBuildBtnRow();
-  document.getElementById('build-result').textContent='';
-}
-
-function changeVal(i,delta){
-  const ds=getDs();
-  buildValues[i]=Math.max(0,Math.min(20,(buildValues[i]||0)+delta));
-  drawBuildChart();
-  const cnt=document.getElementById('col-count-'+i);
-  const pill=document.getElementById('col-pill-'+i);
-  if(!cnt||!pill)return;
-  cnt.textContent=buildValues[i];
-  const correct=buildValues[i]===ds.items[i].count;
-  pill.classList.toggle('done',correct);
-  const sub=pill.querySelector('.col-btn');
-  if(sub)sub.disabled=buildValues[i]<=0;
-}
-
-function renderBuildBtnRow(){
-  const ds=getDs();
-  const CW=buildCvs.width,W=CW-PAD.left-PAD.right;
-  const n=ds.items.length;
-  const gap=Math.floor(W/n);
-  const row=document.getElementById('build-btn-row');
-  row.innerHTML='';
-  row.style.paddingLeft=PAD.left+'px';
-
-  ds.items.forEach((item,i)=>{
-    const col=document.createElement('div');
-    col.className='col-ctrl';
-    col.style.width=gap+'px';
-    col.style.maxWidth=gap+'px';
-
-    // Horizontal pill: [−] count [+]
-    const pill=document.createElement('div');
-    pill.className='col-pill';
-    pill.id='col-pill-'+i;
-
-    const sub=document.createElement('button');
-    sub.className='col-btn';
-    sub.innerHTML='<svg width="10" height="2" viewBox="0 0 10 2"><rect x="0" y="0" width="10" height="2" rx="1" fill="currentColor"/></svg>';
-    sub.setAttribute('aria-label','Remove 1 from '+item.label);
-    sub.disabled=(buildValues[i]||0)<=0;
-    sub.addEventListener('click',()=>changeVal(i,-1));
-
-    const cnt=document.createElement('div');
-    cnt.className='col-count';
-    cnt.id='col-count-'+i;
-    cnt.textContent=buildValues[i]||0;
-
-    const add=document.createElement('button');
-    add.className='col-btn';
-    add.innerHTML='<svg width="10" height="10" viewBox="0 0 10 10"><rect x="4" y="0" width="2" height="10" rx="1" fill="currentColor"/><rect x="0" y="4" width="10" height="2" rx="1" fill="currentColor"/></svg>';
-    add.setAttribute('aria-label','Add 1 to '+item.label);
-    add.addEventListener('click',()=>changeVal(i,1));
-
-    pill.appendChild(sub);pill.appendChild(cnt);pill.appendChild(add);
-    col.appendChild(pill);
-    row.appendChild(col);
+// ── Render the stepper cards on the left ────────────────────────────────────
+function renderCountList() {
+  const ds = getDs();
+  const list = document.getElementById('count-list');
+  list.innerHTML = '';
+  ds.items.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'count-item';
+    div.id = 'ci-' + i;
+    div.style.background = item.bg;
+    div.style.borderColor = item.color + '44';
+    div.innerHTML = `
+      <div class="count-left">
+        <span class="count-emoji">${item.emoji}</span>
+        <span class="count-label" style="color:${item.color}">${item.label}</span>
+      </div>
+      <div class="stepper" id="stepper-${i}" style="border-color:${item.color}44;color:${item.color}">
+        <button class="s-btn" id="sub-${i}" onclick="changeVal(${i},-1)" disabled aria-label="Remove 1">−</button>
+        <div class="s-num" id="val-${i}" style="border-color:${item.color}44">0</div>
+        <button class="s-btn" onclick="changeVal(${i},1)" aria-label="Add 1">+</button>
+      </div>`;
+    list.appendChild(div);
   });
 }
 
-function drawBuildChart(){
-  const ds=getDs();
-  const CW=buildCvs.width,CH=buildCvs.height;
-  const W=CW-PAD.left-PAD.right,H=CH-PAD.top-PAD.bottom;
-  const maxTarget=Math.max(...ds.items.map(i=>i.count));
-  const maxVal=Math.max(maxTarget,1);
-  const n=ds.items.length;
-  const gap=Math.floor(W/n);
-  const barW=Math.floor(gap*0.6);
+// ── Update a value and immediately redraw chart ──────────────────────────────
+function changeVal(i, delta) {
+  buildValues[i] = Math.max(0, Math.min(30, (buildValues[i] || 0) + delta));
+  document.getElementById('val-' + i).textContent = buildValues[i];
+  const sub = document.getElementById('sub-' + i);
+  if (sub) sub.disabled = buildValues[i] <= 0;
+  // style the card to show it's been filled in
+  const ci = document.getElementById('ci-' + i);
+  const ds = getDs();
+  if (buildValues[i] > 0) {
+    ci.style.borderColor = ds.items[i].color + 'AA';
+    ci.style.boxShadow = '0 2px 8px ' + ds.items[i].color + '22';
+  } else {
+    ci.style.borderColor = ds.items[i].color + '44';
+    ci.style.boxShadow = '';
+  }
+  drawBuildChart();
+}
 
-  buildCtx.clearRect(0,0,CW,CH);
+// ── Draw the chart (blank scaffold when all zeros, fills as values increase) ─
+function drawBuildChart() {
+  const ds = getDs();
+  const CW = buildCvs.width, CH = buildCvs.height;
+  const W = CW - PAD.left - PAD.right, H = CH - PAD.top - PAD.bottom;
+  const hasAny = buildValues.some(v => v > 0);
+  const maxVal = hasAny ? Math.max(...buildValues, 1) : 10;
+  const n = ds.items.length;
+  const gap = Math.floor(W / n);
+  const barW = Math.floor(gap * 0.56);
 
-  // Axes
-  buildCtx.strokeStyle='#243060';buildCtx.lineWidth=2.5;buildCtx.lineCap='square';
-  buildCtx.beginPath();buildCtx.moveTo(PAD.left,PAD.top);buildCtx.lineTo(PAD.left,PAD.top+H);buildCtx.lineTo(PAD.left+W,PAD.top+H);buildCtx.stroke();
+  buildCtx.clearRect(0, 0, CW, CH);
+
+  // Subtle background grid fill
+  buildCtx.fillStyle = '#F8FAFE';
+  buildCtx.fillRect(PAD.left, PAD.top, W, H);
 
   // Y grid + labels
-  const step=maxVal<=10?2:maxVal<=20?4:5;
-  for(let v=0;v<=maxVal;v+=step){
-    const y=PAD.top+H-Math.round(v/maxVal*H);
-    buildCtx.strokeStyle='rgba(180,200,230,0.4)';buildCtx.lineWidth=1;buildCtx.setLineDash([3,3]);
-    buildCtx.beginPath();buildCtx.moveTo(PAD.left,y);buildCtx.lineTo(PAD.left+W,y);buildCtx.stroke();
+  const step = maxVal <= 5 ? 1 : maxVal <= 10 ? 2 : maxVal <= 20 ? 4 : 5;
+  for (let v = 0; v <= maxVal; v += step) {
+    const y = PAD.top + H - Math.round((v / maxVal) * H);
+    buildCtx.strokeStyle = '#C8D8F0';
+    buildCtx.lineWidth = 1;
+    buildCtx.setLineDash([4, 3]);
+    buildCtx.beginPath();
+    buildCtx.moveTo(PAD.left, y);
+    buildCtx.lineTo(PAD.left + W, y);
+    buildCtx.stroke();
     buildCtx.setLineDash([]);
-    buildCtx.fillStyle='#6878A8';buildCtx.font='bold 11px "Space Mono",monospace';buildCtx.textAlign='right';
-    buildCtx.textBaseline='middle';
-    buildCtx.fillText(v,PAD.left-5,y);
+    buildCtx.fillStyle = '#6878A8';
+    buildCtx.font = 'bold 10px "Space Mono",monospace';
+    buildCtx.textAlign = 'right';
+    buildCtx.textBaseline = 'middle';
+    buildCtx.fillText(v, PAD.left - 5, y);
   }
 
-  ds.items.forEach((item,i)=>{
-    const cx=PAD.left+i*gap+Math.floor(gap/2);
-    const x=cx-Math.floor(barW/2);
+  // Axes (draw after grid so they sit on top)
+  buildCtx.strokeStyle = '#243060';
+  buildCtx.lineWidth = 2.5;
+  buildCtx.lineCap = 'square';
+  buildCtx.beginPath();
+  buildCtx.moveTo(PAD.left, PAD.top);
+  buildCtx.lineTo(PAD.left, PAD.top + H);
+  buildCtx.lineTo(PAD.left + W, PAD.top + H);
+  buildCtx.stroke();
 
-    // Ghost target bar (dotted outline)
-    const targetH=Math.round(item.count/maxVal*H);
-    buildCtx.strokeStyle='rgba(100,130,180,0.3)';buildCtx.lineWidth=1.5;buildCtx.setLineDash([4,3]);
-    buildCtx.strokeRect(x,PAD.top+H-targetH,barW,targetH);
-    buildCtx.setLineDash([]);
-    // target number above ghost
-    buildCtx.fillStyle='rgba(100,130,180,0.45)';buildCtx.font='bold 11px "Space Mono",monospace';
-    buildCtx.textAlign='center';buildCtx.textBaseline='bottom';
-    buildCtx.fillText(item.count,cx,PAD.top+H-targetH-2);
+  // Bars (or empty column slots)
+  ds.items.forEach((item, i) => {
+    const cx = PAD.left + i * gap + Math.floor(gap / 2);
+    const x = cx - Math.floor(barW / 2);
+    const v = buildValues[i] || 0;
 
-    // Actual filled bar
-    const v=buildValues[i]||0;
-    if(v>0){
-      const bH=Math.round(v/maxVal*H);
-      const correct=v===item.count;
-      buildCtx.fillStyle=correct?item.color:item.color+'CC';
-      buildCtx.beginPath();buildCtx.roundRect(x,PAD.top+H-bH,barW,bH,[4,4,0,0]);buildCtx.fill();
-      // Tick on top if correct
-      if(correct){
-        buildCtx.fillStyle='rgba(255,255,255,0.9)';
-        buildCtx.font='bold 14px sans-serif';buildCtx.textAlign='center';buildCtx.textBaseline='middle';
-        buildCtx.fillText('✓',cx,PAD.top+H-bH+10);
-      }
+    if (v > 0) {
+      const bH = Math.round((v / maxVal) * H);
+      // Bar fill with subtle top-to-bottom alpha blend
+      buildCtx.fillStyle = item.color;
+      buildCtx.globalAlpha = 0.9;
+      buildCtx.beginPath();
+      buildCtx.roundRect(x, PAD.top + H - bH, barW, bH, [5, 5, 0, 0]);
+      buildCtx.fill();
+      buildCtx.globalAlpha = 1;
+      // Top highlight stripe
+      buildCtx.fillStyle = 'rgba(255,255,255,0.18)';
+      buildCtx.beginPath();
+      buildCtx.roundRect(x, PAD.top + H - bH, barW, Math.min(8, bH), [5, 5, 0, 0]);
+      buildCtx.fill();
+      // Value label
+      const lblY = bH > 26 ? PAD.top + H - bH + 5 : PAD.top + H - bH - 6;
+      buildCtx.fillStyle = bH > 26 ? 'rgba(255,255,255,0.95)' : item.color;
+      buildCtx.font = 'bold 12px "Space Mono",monospace';
+      buildCtx.textAlign = 'center';
+      buildCtx.textBaseline = bH > 26 ? 'top' : 'bottom';
+      buildCtx.fillText(v, cx, lblY);
+    } else {
+      // Empty slot: dashed ghost column
+      buildCtx.strokeStyle = item.color + '30';
+      buildCtx.lineWidth = 1.5;
+      buildCtx.setLineDash([4, 4]);
+      buildCtx.beginPath();
+      buildCtx.roundRect(x, PAD.top + 4, barW, H - 4, [5, 5, 0, 0]);
+      buildCtx.stroke();
+      buildCtx.setLineDash([]);
+      // "?" hint inside empty bar
+      buildCtx.fillStyle = item.color + '40';
+      buildCtx.font = 'bold 16px "Space Mono",monospace';
+      buildCtx.textAlign = 'center';
+      buildCtx.textBaseline = 'middle';
+      buildCtx.fillText('?', cx, PAD.top + H / 2);
     }
 
-    // Emoji below axis
-    buildCtx.font='16px serif';buildCtx.textAlign='center';buildCtx.textBaseline='top';
-    buildCtx.fillText(item.emoji,cx,PAD.top+H+6);
+    // Emoji
+    buildCtx.font = '16px serif';
+    buildCtx.textAlign = 'center';
+    buildCtx.textBaseline = 'top';
+    buildCtx.globalAlpha = 1;
+    buildCtx.fillText(item.emoji, cx, PAD.top + H + 6);
     // Label
-    buildCtx.fillStyle='#243060';buildCtx.font='bold 9px "Space Mono",monospace';
-    const lbl=item.label.length>8?item.label.substring(0,8):item.label;
-    buildCtx.fillText(lbl,cx,PAD.top+H+24);
+    buildCtx.fillStyle = v > 0 ? '#243060' : '#9AA3B2';
+    buildCtx.font = (v > 0 ? 'bold' : '') + ' 9px "Space Mono",monospace';
+    buildCtx.textAlign = 'center';
+    buildCtx.textBaseline = 'top';
+    const lbl = item.label.length > 10 ? item.label.substring(0, 10) : item.label;
+    buildCtx.fillText(lbl, cx, PAD.top + H + 26);
   });
-}
 
-function checkBuild(){
-  const ds=getDs();
-  const wrong=ds.items.filter((item,i)=>(buildValues[i]||0)!==item.count);
-  const res=document.getElementById('build-result');
-  if(wrong.length===0){
-    const mode=ds.items.reduce((a,b)=>a.count>b.count?a:b);
-    res.innerHTML='✓ <strong>Correct!</strong> Your chart matches the data. The tallest bar is '+mode.emoji+' <strong>'+mode.label+'</strong> ('+mode.count+') — this is the <em>mode</em>, the most popular answer!';
-    res.className='check-result ok';
-  } else {
-    res.innerHTML='✗ Not quite. Check: '+wrong.map(w=>w.emoji+' <strong>'+w.label+'</strong> needs '+w.count).join(', ')+'.';
-    res.className='check-result no';
+  // Centre "start counting" message if nothing entered yet
+  if (!hasAny) {
+    buildCtx.fillStyle = 'rgba(104,120,168,0.45)';
+    buildCtx.font = 'italic 13px "Instrument Serif",serif';
+    buildCtx.textAlign = 'center';
+    buildCtx.textBaseline = 'middle';
+    buildCtx.fillText('Tap + to start counting — your bars will appear here!', PAD.left + W / 2, PAD.top + H / 2 - 10);
   }
+
+  // Update the panel sub-label
+  const filled = buildValues.filter(v => v > 0).length;
+  const total = ds.items.length;
+  const lbl = document.getElementById('chart-panel-label');
+  if (filled === 0) lbl.textContent = 'Your chart will appear here as you count!';
+  else if (filled < total) lbl.textContent = `${filled} of ${total} items counted — keep going!`;
+  else lbl.textContent = 'All items counted! Hit "Done" to see your results.';
 }
 
-function buildDsBtns(){
-  const c=document.getElementById('build-ds-btns');c.innerHTML='';
-  BUILD_DS.forEach((ds,i)=>{
-    const b=document.createElement('button');
-    b.className='ds-btn'+(i===curBuildIdx?' on':'');
-    if(i===curBuildIdx)b.style.background=ds.color;
-    b.textContent=ds.icon+' '+['Pets','Sports','Food'][i];
-    b.onclick=()=>{curBuildIdx=i;buildValues=[];buildDsBtns();initBuild();};
+// ── Build / Done button ──────────────────────────────────────────────────────
+function buildChart() {
+  const hasAny = buildValues.some(v => v > 0);
+  const res = document.getElementById('build-result');
+  if (!hasAny) {
+    res.textContent = 'Count at least one item first, then tap Done!';
+    res.className = 'check-result no';
+    return;
+  }
+  const ds = getDs();
+  res.innerHTML = '🎉 ' + ds.insight(ds.items, [...buildValues]);
+  res.className = 'check-result ok';
+  drawBuildChart();
+}
+
+function resetBuild() {
+  buildValues = getDs().items.map(() => 0);
+  renderCountList();
+  drawBuildChart();
+  document.getElementById('build-result').textContent = '';
+}
+
+function buildDsBtns() {
+  const c = document.getElementById('build-ds-btns'); c.innerHTML = '';
+  BUILD_DS.forEach((ds, i) => {
+    const b = document.createElement('button');
+    b.className = 'ds-btn' + (i === curBuildIdx ? ' on' : '');
+    if (i === curBuildIdx) b.style.background = ds.color;
+    b.textContent = ds.icon + ' ' + ['Stationery', 'Books', 'Colours'][i];
+    b.onclick = () => { curBuildIdx = i; buildDsBtns(); initBuild(); };
     c.appendChild(b);
   });
 }
 
-function initBuild(){
-  const ds=getDs();
-  document.getElementById('build-head-icon').textContent=ds.icon;
-  document.getElementById('build-head-title').textContent=ds.title;
-  document.getElementById('build-head').style.background=ds.color;
-  document.getElementById('build-instr').textContent='Use + to add students and − to remove. Match each bar to the target number shown in the data above!';
-  // Data pills
-  const dr=document.getElementById('build-data-row');dr.innerHTML='';
-  ds.items.forEach(item=>{
-    const p=document.createElement('div');p.className='data-pill';
-    p.innerHTML='<span>'+item.emoji+'</span>'+item.label+': <strong>'+item.count+'</strong>';
-    dr.appendChild(p);
-  });
-  buildValues=ds.items.map(()=>0);
-  // Size canvas responsively
-  const maxW=Math.min(buildCvs.parentElement.offsetWidth||600,600);
-  buildCvs.width=maxW;buildCvs.height=Math.round(maxW*0.45);
+function sizeCanvas() {
+  const pw = buildCvs.parentElement.offsetWidth || 500;
+  buildCvs.width = pw - 24;
+  buildCvs.height = Math.round((pw - 24) * 0.58);
+}
+
+function initBuild() {
+  const ds = getDs();
+  document.getElementById('build-head-icon').textContent = ds.icon;
+  document.getElementById('build-head-title').textContent = ds.title;
+  document.getElementById('build-head').style.background = ds.color;
+  document.getElementById('scenario-icon').textContent = ds.scenarioIcon;
+  document.getElementById('scenario-text').textContent = ds.scenario;
+  buildValues = ds.items.map(() => 0);
+  sizeCanvas();
+  renderCountList();
   drawBuildChart();
-  renderBuildBtnRow();
-  document.getElementById('build-result').textContent='';
+  document.getElementById('build-result').textContent = '';
 }
 
-// ── READ CHART ───────────────────────────────────────────────
-let curReadIdx=0;
-let readScore=0,readTotal=0;
-const readCvs=document.getElementById('read-canvas');
-const readCtx=readCvs.getContext('2d');
+// ── READ CHART ────────────────────────────────────────────────────────────────
+const READ_DS = [
+  {
+    title: "Riya's Stationery Box", icon: '✏️', color: '#0D7A7A',
+    items: [
+      { label: 'Pencils',    emoji: '✏️',  count: 8,  color: '#1A3A6B' },
+      { label: 'Pens',       emoji: '🖊️',  count: 5,  color: '#9A1060' },
+      { label: 'Erasers',    emoji: '🧽',  count: 3,  color: '#0D7A7A' },
+      { label: 'Rulers',     emoji: '📏',  count: 2,  color: '#3D8A10' },
+      { label: 'Sharpeners', emoji: '🔧',  count: 4,  color: '#B87808' },
+    ],
+    questions: [
+      { q: 'Which item does Riya have the most of?',  ans: 'Pencils', opts: ['Pens','Pencils','Erasers','Rulers'],  exp: 'Pencils = 8 — the tallest bar.' },
+      { q: 'How many Erasers does Riya have?',         ans: '3',       opts: ['2','3','4','5'],                     exp: 'The Eraser bar reaches 3.' },
+      { q: 'How many more Pencils than Pens?',         ans: '3',       opts: ['2','3','4','5'],                     exp: '8 − 5 = 3.' },
+      { q: "Total items in Riya's stationery box?",    ans: '22',      opts: ['18','20','22','25'],                 exp: '8 + 5 + 3 + 2 + 4 = 22.' },
+    ]
+  },
+  {
+    title: "Arjun's School Bag", icon: '🎒', color: '#1A3A6B',
+    items: [
+      { label: 'Maths',   emoji: '🔢', count: 3,  color: '#1A3A6B' },
+      { label: 'English', emoji: '📖', count: 2,  color: '#9A1060' },
+      { label: 'Science', emoji: '🔬', count: 4,  color: '#0D7A7A' },
+      { label: 'Hindi',   emoji: '🪔', count: 2,  color: '#B87808' },
+      { label: 'EVS',     emoji: '🌿', count: 1,  color: '#3D8A10' },
+    ],
+    questions: [
+      { q: "Which subject has the most books in Arjun's bag?", ans: 'Science', opts: ['Maths','English','Science','Hindi'], exp: 'Science = 4 books — the tallest bar.' },
+      { q: 'How many EVS books does Arjun carry?',             ans: '1',       opts: ['1','2','3','4'],                    exp: 'EVS bar = 1.' },
+      { q: 'Maths + English combined?',                        ans: '5',       opts: ['4','5','6','7'],                    exp: '3 + 2 = 5.' },
+      { q: "Total books in Arjun's bag?",                      ans: '12',      opts: ['10','11','12','13'],                exp: '3 + 2 + 4 + 2 + 1 = 12.' },
+    ]
+  },
+  {
+    title: "Meera's Colour Pencils", icon: '🖍️', color: '#B87808',
+    items: [
+      { label: 'Red/Pink',    emoji: '🔴', count: 6,  color: '#DC2626' },
+      { label: 'Blue/Purple', emoji: '🔵', count: 9,  color: '#1A3A6B' },
+      { label: 'Green',       emoji: '🟢', count: 4,  color: '#3D8A10' },
+      { label: 'Yel/Orange',  emoji: '🟡', count: 7,  color: '#B87808' },
+      { label: 'Other',       emoji: '⚪', count: 3,  color: '#6878A8' },
+    ],
+    questions: [
+      { q: 'Which colour group has the most pencils?',    ans: 'Blue/Purple', opts: ['Red/Pink','Blue/Purple','Green','Yel/Orange'], exp: 'Blue/Purple = 9 — the tallest bar.' },
+      { q: 'How many Green pencils does Meera have?',     ans: '4',            opts: ['3','4','5','6'],                              exp: 'Green bar = 4.' },
+      { q: 'Yellow/Orange minus Red/Pink?',               ans: '1',            opts: ['1','2','3','4'],                              exp: '7 − 6 = 1.' },
+      { q: 'Total colour pencils Meera has?',             ans: '29',           opts: ['25','27','29','31'],                          exp: '6 + 9 + 4 + 7 + 3 = 29.' },
+    ]
+  },
+];
 
-function drawReadChart(){
-  const ds=READ_DS[curReadIdx];
-  const CW=readCvs.width,CH=readCvs.height;
-  const W=CW-PAD.left-PAD.right,H=CH-PAD.top-PAD.bottom;
-  const maxVal=Math.max(...ds.items.map(i=>i.count));
-  const n=ds.items.length;
-  const barW=Math.floor(W/n*0.55);
-  const gap=Math.floor(W/n);
+let curReadIdx = 0, readScore = 0, readTotal = 0;
+const readCvs = document.getElementById('read-canvas');
+const readCtx = readCvs.getContext('2d');
 
-  readCtx.clearRect(0,0,CW,CH);
-  // Axes
-  readCtx.strokeStyle='#243060';readCtx.lineWidth=2.5;
-  readCtx.beginPath();readCtx.moveTo(PAD.left,PAD.top);readCtx.lineTo(PAD.left,PAD.top+H);readCtx.lineTo(PAD.left+W,PAD.top+H);readCtx.stroke();
-  // Y grid
-  const step=maxVal<=10?2:maxVal<=20?4:5;
-  readCtx.fillStyle='#6878A8';readCtx.font='bold 11px "Space Mono",monospace';readCtx.textAlign='right';
-  for(let v=0;v<=maxVal;v+=step){
-    const y=PAD.top+H-Math.round(v/maxVal*H);
-    readCtx.strokeStyle='rgba(180,200,230,0.35)';readCtx.lineWidth=1;readCtx.setLineDash([3,3]);
-    readCtx.beginPath();readCtx.moveTo(PAD.left,y);readCtx.lineTo(PAD.left+W,y);readCtx.stroke();
+function drawReadChart() {
+  const ds = READ_DS[curReadIdx];
+  const CW = readCvs.width, CH = readCvs.height;
+  const W = CW - PAD.left - PAD.right, H = CH - PAD.top - PAD.bottom;
+  const maxVal = Math.max(...ds.items.map(i => i.count));
+  const n = ds.items.length;
+  const gap = Math.floor(W / n);
+  const barW = Math.floor(gap * 0.56);
+
+  readCtx.clearRect(0, 0, CW, CH);
+  readCtx.fillStyle = '#F8FAFE';
+  readCtx.fillRect(PAD.left, PAD.top, W, H);
+
+  const step = maxVal <= 5 ? 1 : maxVal <= 10 ? 2 : maxVal <= 20 ? 4 : 5;
+  for (let v = 0; v <= maxVal; v += step) {
+    const y = PAD.top + H - Math.round((v / maxVal) * H);
+    readCtx.strokeStyle = '#C8D8F0'; readCtx.lineWidth = 1; readCtx.setLineDash([4, 3]);
+    readCtx.beginPath(); readCtx.moveTo(PAD.left, y); readCtx.lineTo(PAD.left + W, y); readCtx.stroke();
     readCtx.setLineDash([]);
-    readCtx.fillStyle='#6878A8';readCtx.fillText(v,PAD.left-4,y+4);
+    readCtx.fillStyle = '#6878A8'; readCtx.font = 'bold 10px "Space Mono",monospace';
+    readCtx.textAlign = 'right'; readCtx.textBaseline = 'middle';
+    readCtx.fillText(v, PAD.left - 4, y);
   }
-  // Bars
-  ds.items.forEach((item,i)=>{
-    const x=PAD.left+i*gap+Math.floor(gap/2)-Math.floor(barW/2);
-    const bH=Math.round(item.count/maxVal*H);
-    readCtx.fillStyle=item.color;
-    readCtx.beginPath();readCtx.roundRect(x,PAD.top+H-bH,barW,bH,4);readCtx.fill();
-    // value
-    readCtx.fillStyle='#fff';readCtx.font='bold 13px "Space Mono",monospace';readCtx.textAlign='center';
-    if(bH>20)readCtx.fillText(item.count,x+barW/2,PAD.top+H-bH+14);
-    else{readCtx.fillStyle=item.color;readCtx.fillText(item.count,x+barW/2,PAD.top+H-bH-6);}
-    // emoji + label
-    readCtx.font='16px serif';readCtx.textAlign='center';readCtx.fillText(item.emoji,x+barW/2,PAD.top+H+15);
-    readCtx.fillStyle='#243060';readCtx.font='bold 10px "Space Mono",monospace';
-    readCtx.fillText(item.label.length>7?item.label.substring(0,7):item.label,x+barW/2,PAD.top+H+30);
+
+  readCtx.strokeStyle = '#243060'; readCtx.lineWidth = 2.5;
+  readCtx.beginPath();
+  readCtx.moveTo(PAD.left, PAD.top);
+  readCtx.lineTo(PAD.left, PAD.top + H);
+  readCtx.lineTo(PAD.left + W, PAD.top + H);
+  readCtx.stroke();
+
+  ds.items.forEach((item, i) => {
+    const cx = PAD.left + i * gap + Math.floor(gap / 2);
+    const x = cx - Math.floor(barW / 2);
+    const bH = Math.round((item.count / maxVal) * H);
+    readCtx.fillStyle = item.color;
+    readCtx.globalAlpha = 0.9;
+    readCtx.beginPath(); readCtx.roundRect(x, PAD.top + H - bH, barW, bH, [5, 5, 0, 0]); readCtx.fill();
+    readCtx.globalAlpha = 1;
+    readCtx.fillStyle = 'rgba(255,255,255,0.18)';
+    readCtx.beginPath(); readCtx.roundRect(x, PAD.top + H - bH, barW, Math.min(8, bH), [5, 5, 0, 0]); readCtx.fill();
+    const lblY = bH > 26 ? PAD.top + H - bH + 5 : PAD.top + H - bH - 6;
+    readCtx.fillStyle = bH > 26 ? '#fff' : item.color;
+    readCtx.font = 'bold 12px "Space Mono",monospace'; readCtx.textAlign = 'center';
+    readCtx.textBaseline = bH > 26 ? 'top' : 'bottom';
+    readCtx.fillText(item.count, cx, lblY);
+    readCtx.font = '16px serif'; readCtx.textAlign = 'center'; readCtx.textBaseline = 'top';
+    readCtx.fillText(item.emoji, cx, PAD.top + H + 6);
+    readCtx.fillStyle = '#243060'; readCtx.font = 'bold 9px "Space Mono",monospace';
+    readCtx.textAlign = 'center'; readCtx.textBaseline = 'top';
+    const lbl = item.label.length > 8 ? item.label.substring(0, 8) : item.label;
+    readCtx.fillText(lbl, cx, PAD.top + H + 26);
   });
 }
 
-function renderReadQuestions(){
-  const ds=READ_DS[curReadIdx];
-  const qc=document.getElementById('read-questions');qc.innerHTML='';
-  ds.questions.forEach((q,qi)=>{
-    const card=document.createElement('div');card.className='q-card';
-    card.innerHTML='<div class="q-num">Question '+(qi+1)+'</div><div class="q-text">'+q.q+'</div><div class="q-opts" id="qo-'+qi+'"></div><div class="q-fb" id="qf-'+qi+'"></div>';
+function renderReadQuestions() {
+  const ds = READ_DS[curReadIdx];
+  const qc = document.getElementById('read-questions'); qc.innerHTML = '';
+  ds.questions.forEach((q, qi) => {
+    const card = document.createElement('div'); card.className = 'q-card';
+    card.innerHTML = '<div class="q-num">Question ' + (qi + 1) + '</div><div class="q-text">' + q.q + '</div><div class="q-opts" id="qo-' + qi + '"></div><div class="q-fb" id="qf-' + qi + '"></div>';
     qc.appendChild(card);
-    [...q.opts].sort(()=>Math.random()-.5).forEach(o=>{
-      const b=document.createElement('button');b.className='q-opt';b.textContent=o;
-      b.onclick=()=>{
-        document.querySelectorAll('#qo-'+qi+' .q-opt').forEach(x=>x.onclick=null);
-        const ok=o===q.ans;
-        b.classList.add(ok?'correct':'wrong');
-        if(!ok)document.querySelectorAll('#qo-'+qi+' .q-opt').forEach(x=>{if(x.textContent===q.ans)x.classList.add('correct')});
-        document.getElementById('qf-'+qi).textContent=(ok?'\u2713 ':'\u2717 ')+q.exp;
-        document.getElementById('qf-'+qi).className='q-fb '+(ok?'ok':'no');
-        readTotal++;if(ok)readScore++;
-        document.getElementById('read-score').textContent=readScore+' / '+readTotal;
+    [...q.opts].sort(() => Math.random() - .5).forEach(o => {
+      const b = document.createElement('button'); b.className = 'q-opt'; b.textContent = o;
+      b.onclick = () => {
+        document.querySelectorAll('#qo-' + qi + ' .q-opt').forEach(x => x.onclick = null);
+        const ok = o === q.ans;
+        b.classList.add(ok ? 'correct' : 'wrong');
+        if (!ok) document.querySelectorAll('#qo-' + qi + ' .q-opt').forEach(x => { if (x.textContent === q.ans) x.classList.add('correct'); });
+        document.getElementById('qf-' + qi).textContent = (ok ? '✓ ' : '✗ ') + q.exp;
+        document.getElementById('qf-' + qi).className = 'q-fb ' + (ok ? 'ok' : 'no');
+        readTotal++; if (ok) readScore++;
+        document.getElementById('read-score').textContent = readScore + ' / ' + readTotal;
       };
-      document.getElementById('qo-'+qi).appendChild(b);
+      document.getElementById('qo-' + qi).appendChild(b);
     });
   });
 }
 
-function initRead(){
-  const ds=READ_DS[curReadIdx];
-  document.getElementById('read-head-icon').textContent=ds.icon;
-  document.getElementById('read-head-title').textContent=ds.title;
-  document.getElementById('read-head').style.background=ds.color;
-  const maxW=Math.min(readCvs.parentElement.offsetWidth||600,600);
-  readCvs.width=maxW;readCvs.height=Math.round(maxW*0.47);
-  drawReadChart();
-  renderReadQuestions();
+function initRead() {
+  const ds = READ_DS[curReadIdx];
+  document.getElementById('read-head-icon').textContent = ds.icon;
+  document.getElementById('read-head-title').textContent = ds.title;
+  document.getElementById('read-head').style.background = ds.color;
+  const maxW = Math.min(readCvs.parentElement.offsetWidth || 600, 600);
+  readCvs.width = maxW; readCvs.height = Math.round(maxW * 0.47);
+  drawReadChart(); renderReadQuestions();
 }
 
-function nextReadChart(){
-  curReadIdx=(curReadIdx+1)%READ_DS.length;
-  initRead();
-}
+function nextReadChart() { curReadIdx = (curReadIdx + 1) % READ_DS.length; initRead(); }
 
-// ── PRACTICE ────────────────────────────────────────────────
-const PQ=[
-  {q:'A bar chart: Maths=10, Science=7, English=12. Most popular?',ans:'English',opts:['Maths','Science','English','Equal'],exp:'English has the tallest bar \u2014 12 students.'},
-  {q:'What does |||| | represent in a tally?',ans:'6',opts:['5','6','7','4'],exp:'5 (one group) + 1 = 6.'},
-  {q:'Dog=8, Cat=5, Fish=3. Total students surveyed?',ans:'16',opts:['13','14','16','18'],exp:'8+5+3 = 16.'},
-  {q:'Apples=4, Bananas=9, Mangoes=6. Shortest bar?',ans:'Apples',opts:['Bananas','Mangoes','Apples','Equal'],exp:'Apples = 4, the smallest count.'},
-  {q:'The MODE is the value that appears...',ans:'Most often',opts:['Least often','In the middle','Most often','First'],exp:'Mode = most common = tallest bar.'},
-  {q:'Jan=3, Feb=5, Mar=2, Apr=4. Total students?',ans:'14',opts:['12','13','14','15'],exp:'3+5+2+4 = 14.'},
-  {q:'The y-axis (vertical line) on a bar chart usually shows:',ans:'The count',opts:['The categories','The count','The title','The colours'],exp:'Vertical axis = how many. Categories go along the bottom.'},
+// ── PRACTICE ──────────────────────────────────────────────────────────────────
+const PQ = [
+  { q: 'A bar chart: Pencils=8, Pens=5, Erasers=3. Which bar is tallest?', ans: 'Pencils', opts: ['Pens','Pencils','Erasers','They are equal'], exp: 'Pencils = 8 is the largest number.' },
+  { q: 'What does |||| | represent in a tally chart?', ans: '6', opts: ['5','6','7','4'], exp: 'Five strokes in a group plus one more = 6.' },
+  { q: 'Riya has 6 pencils, 4 pens, 2 erasers. Total items?', ans: '12', opts: ['10','11','12','13'], exp: '6 + 4 + 2 = 12.' },
+  { q: 'Books: Maths=4, English=2, Science=4. Which subject has the fewest books?', ans: 'English', opts: ['Maths','English','Science','They are equal'], exp: 'English = 2 — the shortest bar.' },
+  { q: 'The MODE is the category with the…', ans: 'Highest bar', opts: ['Shortest bar','Highest bar','Middle bar','Tallest label'], exp: 'Mode = most common = tallest bar.' },
+  { q: 'Colour pencils: Red=5, Blue=8, Green=3. How many more Blue than Green?', ans: '5', opts: ['3','4','5','6'], exp: '8 − 3 = 5.' },
+  { q: 'The vertical axis (y-axis) on a bar chart shows:', ans: 'The count (how many)', opts: ['The categories','The count (how many)','The title','The colours'], exp: 'The vertical axis shows numbers — how many.' },
+  { q: 'Arjun has 3 pencils, 3 pens, 3 erasers. Which bar is shortest?', ans: 'They are all equal', opts: ['Pencils','Pens','Erasers','They are all equal'], exp: 'All three have the same count — 3 each.' },
 ];
-let pqUsed=[];
-function nextPQ(){
-  if(pqUsed.length>=PQ.length)pqUsed=[];
-  let idx;do{idx=Math.floor(Math.random()*PQ.length)}while(pqUsed.includes(idx));
+let pqUsed = [];
+function nextPQ() {
+  if (pqUsed.length >= PQ.length) pqUsed = [];
+  let idx; do { idx = Math.floor(Math.random() * PQ.length); } while (pqUsed.includes(idx));
   pqUsed.push(idx);
-  const q=PQ[idx];
-  document.getElementById('pr-q').textContent=q.q;
-  document.getElementById('pr-fb').textContent='';
-  document.getElementById('pr-fb').className='pr-fb';
-  const opts=document.getElementById('pr-opts');opts.innerHTML='';
-  [...q.opts].sort(()=>Math.random()-.5).forEach(o=>{
-    const b=document.createElement('button');b.className='pr-opt';b.textContent=o;
-    b.onclick=()=>{
-      opts.querySelectorAll('.pr-opt').forEach(x=>x.onclick=null);
-      const ok=o===q.ans;
-      b.classList.add(ok?'correct':'wrong');
-      if(!ok)opts.querySelectorAll('.pr-opt').forEach(x=>{if(x.textContent===q.ans)x.classList.add('correct')});
-      document.getElementById('pr-fb').textContent=(ok?'\u2713 Correct! ':'\u2717 Not quite. ')+q.exp;
-      document.getElementById('pr-fb').className='pr-fb '+(ok?'ok':'no');
+  const q = PQ[idx];
+  document.getElementById('pr-q').textContent = q.q;
+  document.getElementById('pr-fb').textContent = ''; document.getElementById('pr-fb').className = 'pr-fb';
+  const opts = document.getElementById('pr-opts'); opts.innerHTML = '';
+  [...q.opts].sort(() => Math.random() - .5).forEach(o => {
+    const b = document.createElement('button'); b.className = 'pr-opt'; b.textContent = o;
+    b.onclick = () => {
+      opts.querySelectorAll('.pr-opt').forEach(x => x.onclick = null);
+      const ok = o === q.ans;
+      b.classList.add(ok ? 'correct' : 'wrong');
+      if (!ok) opts.querySelectorAll('.pr-opt').forEach(x => { if (x.textContent === q.ans) x.classList.add('correct'); });
+      document.getElementById('pr-fb').textContent = (ok ? '✓ Correct! ' : '✗ Not quite. ') + q.exp;
+      document.getElementById('pr-fb').className = 'pr-fb ' + (ok ? 'ok' : 'no');
     };
     opts.appendChild(b);
   });
 }
 
-function switchTab(t){
-  ['build','read','practice'].forEach(x=>document.getElementById('pnl-'+x).classList.toggle('on',x===t));
-  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',['build','read','practice'][i]===t));
-  if(t==='practice')nextPQ();
-  if(t==='read')initRead();
-  if(t==='build'){buildDsBtns();initBuild();}
+// ── TAB SWITCH ────────────────────────────────────────────────────────────────
+function switchTab(t) {
+  ['build','read','practice'].forEach(x => document.getElementById('pnl-' + x).classList.toggle('on', x === t));
+  document.querySelectorAll('.tab').forEach((b, i) => b.classList.toggle('on', ['build','read','practice'][i] === t));
+  if (t === 'practice') nextPQ();
+  if (t === 'read') initRead();
+  if (t === 'build') { buildDsBtns(); initBuild(); }
 }
 
-window.addEventListener('resize',()=>{
-  if(document.getElementById('pnl-build').classList.contains('on'))initBuild();
-  if(document.getElementById('pnl-read').classList.contains('on'))initRead();
+window.addEventListener('resize', () => {
+  if (document.getElementById('pnl-build').classList.contains('on')) { sizeCanvas(); drawBuildChart(); }
+  if (document.getElementById('pnl-read').classList.contains('on')) initRead();
 });
 
-// Init
-buildDsBtns();initBuild();initRead();nextPQ();
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildDsBtns(); initBuild(); initRead(); nextPQ();
 </script>
 </body>
 </html>
